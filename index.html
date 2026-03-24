@@ -119,7 +119,7 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
 .out-tag{font-size:10px;font-weight:500;letter-spacing:.1em;color:var(--tx1)}
 .copy-btn{font-size:10px;padding:3px 9px;border-radius:999px;border:.5px solid var(--bd1);background:transparent;color:var(--tx1);cursor:pointer;font-family:var(--mono);transition:all .12s}
 .copy-btn:hover{background:var(--bg0);color:var(--tx0)}
-.out-text{padding:13px;font-size:11.5px;line-height:1.72;color:var(--tx0);white-space:pre-wrap;font-family:var(--mono);max-height:520px;overflow-y:auto}
+.out-text{padding:13px;font-size:11.5px;line-height:1.72;color:var(--tx0);white-space:pre-wrap;font-family:var(--mono);max-height:520px;min-height:120px;overflow-y:auto;width:100%;resize:vertical;background:var(--bg1);border:none;outline:none;box-sizing:border-box;display:block;appearance:none;-webkit-appearance:none}.out-text:focus{background:var(--bg0);box-shadow:inset 0 0 0 1.5px var(--bd1)}
 
 /* ── LIVE REVIEW UI ── */
 .progress-wrap{margin-bottom:.9rem}
@@ -266,7 +266,7 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
     <textarea id="tried" placeholder="예: cosine annealing, mixup, label smoothing..." style="min-height:54px"></textarea>
   </div>
   <button class="gen-btn" onclick="genBreakthrough()">▶  돌파구 프롬프트 생성</button>
-  <div class="output-box" id="b-out"><div class="out-head"><span class="out-tag">PROMPT</span><button class="copy-btn" onclick="cp('b-txt',this)">copy</button></div><div class="out-text" id="b-txt"></div></div>
+  <div class="output-box" id="b-out"><div class="out-head"><span class="out-tag">PROMPT</span><span style="font-size:9px;color:var(--tx2);font-family:var(--sans)">직접 수정 가능</span><button class="copy-btn" onclick="cp('b-txt',this)">copy</button></div><textarea class="out-text" id="b-txt" spellcheck="false"></textarea></div>
 </div>
 
 
@@ -326,7 +326,7 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
     <textarea id="a-extra" placeholder="예: MIMIC 데이터셋 IRB 준수 여부 중점 확인. 투고 대상: Nature Machine Intelligence." style="min-height:48px"></textarea>
   </div>
   <button class="gen-btn" onclick="genAudit()">▶  감사 프롬프트 생성</button>
-  <div class="output-box" id="a-out"><div class="out-head"><span class="out-tag">PROMPT</span><button class="copy-btn" onclick="cp('a-txt',this)">copy</button></div><div class="out-text" id="a-txt"></div></div>
+  <div class="output-box" id="a-out"><div class="out-head"><span class="out-tag">PROMPT</span><span style="font-size:9px;color:var(--tx2);font-family:var(--sans)">직접 수정 가능</span><button class="copy-btn" onclick="cp('a-txt',this)">copy</button></div><textarea class="out-text" id="a-txt" spellcheck="false"></textarea></div>
 </div>
 
 
@@ -454,8 +454,8 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
   </div>
   <button class="gen-btn" onclick="genReview()">▶  AI 리뷰 시뮬레이션 프롬프트 생성</button>
   <div class="output-box" id="rv-out">
-    <div class="out-head"><span class="out-tag">PROMPT — Claude CLI 복붙용</span><button class="copy-btn" onclick="cp('rv-txt',this)">copy</button></div>
-    <div class="out-text" id="rv-txt"></div>
+    <div class="out-head"><span class="out-tag">PROMPT — Claude CLI 복붙용</span><span style="font-size:9px;color:var(--tx2);font-family:var(--sans)">직접 수정 가능</span><button class="copy-btn" onclick="cp('rv-txt',this)">copy</button></div>
+    <textarea class="out-text" id="rv-txt" spellcheck="false"></textarea>
   </div>
 </div>
 
@@ -517,7 +517,7 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
     <textarea id="i-avoid" placeholder="예: BERT fine-tuning 변형, 단순 prompt engineering 비교..." style="min-height:48px"></textarea>
   </div>
   <button class="gen-btn" onclick="genIdea()">▶  연구 아이디어 및 갭 분석 프롬프트 생성</button>
-  <div class="output-box" id="i-out"><div class="out-head"><span class="out-tag">PROMPT</span><button class="copy-btn" onclick="cp('i-txt',this)">copy</button></div><div class="out-text" id="i-txt"></div></div>
+  <div class="output-box" id="i-out"><div class="out-head"><span class="out-tag">PROMPT</span><span style="font-size:9px;color:var(--tx2);font-family:var(--sans)">직접 수정 가능</span><button class="copy-btn" onclick="cp('i-txt',this)">copy</button></div><textarea class="out-text" id="i-txt" spellcheck="false"></textarea></div>
 </div>
 
 
@@ -570,7 +570,7 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
     <textarea id="ex-constraints" placeholder="예: A100 ×4, 최대 72시간 런타임, PyTorch 2.1, CUDA 12.1" style="min-height:48px"></textarea>
   </div>
   <button class="gen-btn" onclick="genExperiment()">▶  실험 설계 최적화 프롬프트 생성</button>
-  <div class="output-box" id="ex-out"><div class="out-head"><span class="out-tag">PROMPT</span><button class="copy-btn" onclick="cp('ex-txt',this)">copy</button></div><div class="out-text" id="ex-txt"></div></div>
+  <div class="output-box" id="ex-out"><div class="out-head"><span class="out-tag">PROMPT</span><span style="font-size:9px;color:var(--tx2);font-family:var(--sans)">직접 수정 가능</span><button class="copy-btn" onclick="cp('ex-txt',this)">copy</button></div><textarea class="out-text" id="ex-txt" spellcheck="false"></textarea></div>
 </div>
 
 
@@ -726,8 +726,8 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
 
   <button class="gen-btn" onclick="genWriting()">▶  LaTeX 논문 작성 프롬프트 생성</button>
   <div class="output-box" id="w-out">
-    <div class="out-head"><span class="out-tag">PROMPT — Claude CLI 복붙용</span><button class="copy-btn" onclick="cp('w-txt',this)">copy</button></div>
-    <div class="out-text" id="w-txt"></div>
+    <div class="out-head"><span class="out-tag">PROMPT — Claude CLI 복붙용</span><span style="font-size:9px;color:var(--tx2);font-family:var(--sans)">직접 수정 가능</span><button class="copy-btn" onclick="cp('w-txt',this)">copy</button></div>
+    <textarea class="out-text" id="w-txt" spellcheck="false"></textarea>
   </div>
 </div>
 
@@ -790,7 +790,7 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
     </div>
   </div>
   <button class="gen-btn" onclick="genStrategy()">▶  투고 전략 프롬프트 생성</button>
-  <div class="output-box" id="st-out"><div class="out-head"><span class="out-tag">PROMPT</span><button class="copy-btn" onclick="cp('st-txt',this)">copy</button></div><div class="out-text" id="st-txt"></div></div>
+  <div class="output-box" id="st-out"><div class="out-head"><span class="out-tag">PROMPT</span><span style="font-size:9px;color:var(--tx2);font-family:var(--sans)">직접 수정 가능</span><button class="copy-btn" onclick="cp('st-txt',this)">copy</button></div><textarea class="out-text" id="st-txt" spellcheck="false"></textarea></div>
 </div>
 
 
@@ -841,7 +841,7 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
     <textarea id="rb-limits" placeholder="예: 추가 실험 런타임 최대 48시간, rebuttal 글자 수 제한 500 words." style="min-height:44px"></textarea>
   </div>
   <button class="gen-btn" onclick="genRebuttal()">▶  Rebuttal 전략 프롬프트 생성</button>
-  <div class="output-box" id="rb-out"><div class="out-head"><span class="out-tag">PROMPT</span><button class="copy-btn" onclick="cp('rb-txt',this)">copy</button></div><div class="out-text" id="rb-txt"></div></div>
+  <div class="output-box" id="rb-out"><div class="out-head"><span class="out-tag">PROMPT</span><span style="font-size:9px;color:var(--tx2);font-family:var(--sans)">직접 수정 가능</span><button class="copy-btn" onclick="cp('rb-txt',this)">copy</button></div><textarea class="out-text" id="rb-txt" spellcheck="false"></textarea></div>
 </div>
 
 
@@ -886,13 +886,14 @@ function getWcConf(){
 }
 
 function cp(id,btn){
-  const t=document.getElementById(id).textContent;if(!t)return;
+  const el=document.getElementById(id);
+  const t=el.value!==undefined?el.value:el.textContent;if(!t)return;
   navigator.clipboard.writeText(t).then(()=>{btn.textContent='copied!';setTimeout(()=>btn.textContent='copy',1600)});
 }
 function flashRequired(id){const e=document.getElementById(id);e.focus();e.style.borderColor='#E24B4A';setTimeout(()=>e.style.borderColor='',1500)}
 function chips(groupId){return[...document.querySelectorAll(`#${groupId} .chip.on`)].map(c=>c.dataset.v)}
 function showOut(outId,txtId,txt){
-  document.getElementById(txtId).textContent=txt;
+  document.getElementById(txtId).value=txt;
   const b=document.getElementById(outId);b.classList.add('show');b.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
