@@ -677,12 +677,13 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
 <script>
 /* ═══════════ UTILS ═══════════ */
 function sw(id){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  const btn=document.querySelector(`.tab-btn[data-tab="${id}"]`);
-  if(btn)btn.classList.add('active');
-  const panel=document.getElementById('tab-'+id);
-  if(panel)panel.classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(function(b){
+    if(b.getAttribute('data-tab')===id){b.classList.add('active');}
+  });
+  var panel=document.getElementById('tab-'+id);
+  if(panel){panel.classList.add('active');}
 }
 document.querySelectorAll('#b-strategies .chip,#i-resources .chip,#ex-concerns .chip,#w-sections .chip,#st-factors .chip,#rb-strategy .chip,#r-personas .chip').forEach(c=>c.addEventListener('click',()=>c.classList.toggle('on')));
 function toggleCheck(el){el.classList.toggle('on')}
@@ -769,144 +770,138 @@ const RIGOR_NOTE={
 };
 
 function genReview(){
-  const title    = document.getElementById('r-title').value.trim();
-  const abstract = document.getElementById('r-abstract').value.trim();
-  if(!title)   {flashRequired('r-title');return}
-  if(!abstract){flashRequired('r-abstract');return}
+  var title    = document.getElementById('r-title').value.trim();
+  var abstract = document.getElementById('r-abstract').value.trim();
+  if(!title)   {flashRequired('r-title');return;}
+  if(!abstract){flashRequired('r-abstract');return;}
 
-  const conf    = document.querySelector('.conf-card.on').dataset.conf;
-  const cp      = CONF_P[conf];
-  const count   = parseInt(document.getElementById('r-count').value);
-  const lang    = document.getElementById('r-lang').value;
-  const rigor   = document.getElementById('r-rigor').value;
-  const ctx     = document.getElementById('r-context').value.trim();
-  const selected= chips('r-personas');
+  var conf    = document.querySelector('.conf-card.on').dataset.conf;
+  var cp      = CONF_P[conf];
+  var count   = parseInt(document.getElementById('r-count').value);
+  var lang    = document.getElementById('r-lang').value;
+  var rigor   = document.getElementById('r-rigor').value;
+  var ctx     = document.getElementById('r-context').value.trim();
+  var selected= chips('r-personas');
 
-  // Pick active personas (up to count)
-  const allPersonas = ['senior','industry','phd','interdisciplinary','stats'];
-  const active = allPersonas.filter(p => selected.includes(p)).slice(0, count);
-  // If fewer selected than count, pad with remaining
-  const remaining = allPersonas.filter(p => !selected.includes(p));
-  while(active.length < count) active.push(remaining.shift());
-  const reviewers = active.slice(0, count);
+  var allPersonas = ['senior','industry','phd','interdisciplinary','stats'];
+  var active = allPersonas.filter(function(p){return selected.indexOf(p)>=0;}).slice(0,count);
+  var remaining = allPersonas.filter(function(p){return selected.indexOf(p)<0;});
+  while(active.length < count && remaining.length) active.push(remaining.shift());
+  var reviewers = active.slice(0,count);
 
-  const langNote  = lang==='ko' ? '모든 리뷰는 한국어로 작성해 주세요.' : 'Write all reviews in English.';
-  const rigorNote = RIGOR_NOTE[rigor];
+  var langNote  = lang==='ko' ? '모든 리뷰는 한국어로 작성해 주세요.' : 'Write all reviews in English.';
+  var rigorNote = RIGOR_NOTE[rigor];
 
-  const reviewerBlock = reviewers.map((pid, i) => {
-    const p = PERSONA_DESC[pid];
-    return `### ${p.name} — ${p.role}
-- 주요 관심사: ${p.focus}
-- 리뷰 스타일: ${p.tone}
-- 점수 체계: ${conf} (${cp.scoreRange})`;
-  }).join('
+  var reviewerBlock = reviewers.map(function(pid,i){
+    var p = PERSONA_DESC[pid];
+    return '### ' + p.name + ' \u2014 ' + p.role + '\n'
+         + '- \uc8fc\uc694 \uad00\uc2ec\uc0ac: ' + p.focus + '\n'
+         + '- \ub9ac\ubdf0 \uc2a4\ud0c0\uc77c: ' + p.tone;
+  }).join('\n\n');
 
-');
+  var scoreMax = cp.scoreRange.split('-')[1];
 
-  const prompt =
-`당신은 ${conf} 학술대회의 동료 심사(peer review) 시뮬레이션을 수행하는 전문가입니다.
-아래 논문을 ${count}명의 서로 다른 리뷰어 관점에서 철저하게 심사해 주세요.
+  var lines = [
+    '\ub2f9\uc2e0\uc740 ' + conf + ' \ud559\uc220\ub300\ud68c\uc758 \ub3d9\ub8cc \uc2ec\uc0ac(peer review) \uc2dc\ubbac\ub808\uc774\uc158\uc744 \uc218\ud589\ud558\ub294 \uc804\ubb38\uac00\uc785\ub2c8\ub2e4.',
+    '\uc544\ub798 \ub17c\ubb38\uc744 ' + count + '\uba85\uc758 \uc11c\ub85c \ub2e4\ub978 \ub9ac\ube70\uc5b4 \uad00\uc810\uc5d0\uc11c \ucca0\uc800\ud558\uac8c \uc2ec\uc0ac\ud574 \uc8fc\uc138\uc694.',
+    '',
+    '---',
+    '## \ub17c\ubb38 \uc815\ubcf4',
+    '- **\uc81c\ubaa9**: ' + title,
+    '- **\ud22c\uace0 \ud559\ud68c**: ' + conf + ' (\ud569\uaca9\ub960 ' + cp.acceptance + ', \uc810\uc218 \ubc94\uc704 ' + cp.scoreRange + ')',
+    '- **\ud559\ud68c \uc2ec\uc0ac \ud2b9\uc131**: ' + cp.style,
+    ctx ? '- **\ucd94\uac00 \ucee8\ud14d\uc2a4\ud2b8**: ' + ctx : '',
+    '',
+    '**\ucd08\ub85d**:',
+    abstract,
+    '',
+    '---',
+    '## \uc2ec\uc0ac \uc9c0\uce68',
+    '',
+    rigorNote,
+    '',
+    langNote,
+    '',
+    '\uac01 \ub9ac\ubdf0\uc5b4\ub294 **\uc644\uc804\ud788 \ub3c5\ub9bd\uc801\uc73c\ub85c** \uc2ec\uc0ac\ud558\uba70, \uc11c\ub85c \ub2e4\ub978 \uc804\ubb38\uc131\uacfc \uad00\uc810\uc744 \uac00\uc9d1\ub2c8\ub2e4.',
+    '\ub9ac\ubdf0\uc5b4 \uac04 \uc758\ub3c4\uc801 \ub2e4\uc591\uc131\uc744 \uc720\uc9c0\ud558\uc138\uc694.',
+    '',
+    '---',
+    '## \ub9ac\ubdf0\uc5b4 \ud504\ub85c\ud30c\uc77c',
+    '',
+    reviewerBlock,
+    '',
+    '---',
+    '## \uac01 \ub9ac\ubdf0\uc5b4\uac00 \uc791\uc131\ud560 OpenReview \ud615\uc2dd',
+    '',
+    '\uc544\ub798 \uad6c\uc870\ub97c ' + count + '\uba85 \uac01\uac01\uc5d0 \ub300\ud574 \uc644\uc804\ud558\uac8c \uc791\uc131\ud574 \uc8fc\uc138\uc694:',
+    '',
+    '---',
+    '=== [\ub9ac\ubdf0\uc5b4 \uc774\ub984 \ubc0f \uc5ed\ud560] ===',
+    '',
+    '**Summary**',
+    '[\ub17c\ubb38\uc774 \ubb34\uc5c7\uc744 \uc8fc\uc7a5\ud558\uace0 \uae30\uc5ec\ud558\ub294\uc9c0 2-4\ubb38\uc7a5\uc73c\ub85c \uc694\uc57d]',
+    '',
+    '**Strengths**',
+    '- [\uad6c\uccb4\uc801\uc778 \uac15\uc810 1]',
+    '- [\uad6c\uccb4\uc801\uc778 \uac15\uc810 2]',
+    '- [\uad6c\uccb4\uc801\uc778 \uac15\uc810 3]',
+    '',
+    '**Weaknesses**',
+    '- [\uac00\uc7a5 \uce58\uba85\uc801\uc778 \uc57d\uc810 \uc21c]',
+    '- [\uc57d\uc810 2]',
+    '- [\uc57d\uc810 3]',
+    '',
+    '**Questions for Authors**',
+    '1. [\uc800\uc790\uc5d0\uac8c \ubb3b\uace0 \uc2f6\uc740 \uad6c\uccb4\uc801 \uc9c8\ubb38]',
+    '2. [\uc9c8\ubb38 2]',
+    '',
+    '**Limitations & Broader Impact**',
+    '[\uc5f0\uad6c \ud55c\uacc4 \ubc0f \uc724\ub9ac\uc801 \uace0\ub824\uc0ac\ud56d 1-2\ubb38\uc7a5]',
+    '',
+    '**Overall Assessment**',
+    '[\uc885\ud569 \ud310\ub2e8 2-3\ubb38\uc7a5]',
+    '',
+    '**Scores**',
+    '- Overall: X/' + scoreMax,
+    '- Confidence: X/5',
+    '- Novelty: X/5',
+    '- Technical Quality: X/5',
+    '- Presentation: X/5',
+    '',
+    '**Recommendation**: [Strong Accept / Weak Accept / Borderline / Weak Reject / Strong Reject]',
+    '---',
+    '',
+    '---',
+    '## Area Chair (AC) Meta-Review',
+    '',
+    count + '\uba85\uc758 \ub9ac\ubdf0\uac00 \ubaa8\ub450 \uc644\uc131\ub41c \ud6c4, AC\ub85c\uc11c \ub2e4\uc74c\uc744 \uc791\uc131\ud574 \uc8fc\uc138\uc694:',
+    '',
+    '---',
+    '=== Area Chair Meta-Review ===',
+    '',
+    '**Reviewer Consensus Summary**',
+    '[\ub9ac\ubdf0\uc5b4\ub4e4 \uc0ac\uc774\uc758 \uacf5\ud1b5\uc810\uacfc \uc774\uaca0\uc744 3-4\ubb38\uc7a5\uc73c\ub85c \uc815\ub9ac]',
+    '',
+    '**Critical Issues**',
+    '- [\uc774\uc288 1]',
+    '- [\uc774\uc288 2]',
+    '',
+    '**Agreed Strengths**',
+    '- [\uacf5\ud1b5\uc801\uc73c\ub85c \uc778\uc815\ub41c \uac15\uc810]',
+    '',
+    '**AC Independent Assessment**',
+    '[AC\uc758 \ub3c5\ub9bd\uc801 \ud310\ub2e8 3-4\ubb38\uc7a5]',
+    '',
+    '**Final Decision**: [Accept / Weak Accept / Borderline / Weak Reject / Reject]',
+    '**AC Confidence**: X/5',
+    '',
+    '**Message to Authors**',
+    '[\ud575\uc2ec \uac1c\uc120 \ubc29\ud5a5 2-3\ubb38\uc7a5]',
+    '---'
+  ];
 
----
-## 논문 정보
-- **제목**: ${title}
-- **투고 학회**: ${conf} (합격률 ${cp.acceptance}, 점수 범위 ${cp.scoreRange})
-- **학회 심사 특성**: ${cp.style}
-${ctx ? '- **추가 컨텍스트**: ' + ctx : ''}
-
-**초록**:
-${abstract}
-
----
-## 심사 지침
-
-${rigorNote}
-
-${langNote}
-
-각 리뷰어는 **완전히 독립적으로** 심사하며, 서로 다른 전문성과 관점을 가집니다.
-리뷰어 간 의도적 다양성을 유지하세요 — 같은 약점을 모두 지적하기보다 각자의 시각에서 다른 측면을 발굴해야 합니다.
-
----
-## 리뷰어 프로파일
-
-${reviewerBlock}
-
----
-## 각 리뷰어가 작성할 OpenReview 형식
-
-아래 구조를 ${count}명 각각에 대해 완전하게 작성해 주세요:
-
-\`\`\`
-=== [리뷰어 이름 및 역할] ===
-
-**Summary**
-[논문이 무엇을 주장하고 기여하는지 2-4문장으로 요약]
-
-**Strengths**
-- [구체적인 강점 1 — 초록의 특정 내용을 인용하며 작성]
-- [구체적인 강점 2]
-- [구체적인 강점 3]
-(필요시 추가)
-
-**Weaknesses**
-- [가장 치명적인 약점 — 심각도 높은 순으로]
-- [약점 2]
-- [약점 3]
-(필요시 추가, 최대 6개)
-
-**Questions for Authors**
-1. [저자에게 묻고 싶은 구체적 질문 — rebuttal에서 답해야 할 것]
-2. [질문 2]
-(2-4개)
-
-**Limitations & Broader Impact**
-[연구 한계 및 윤리적 고려사항 1-2문장]
-
-**Overall Assessment**
-[종합 판단 2-3문장 — 합격/불합격 경향과 이유]
-
-**Scores**
-- Overall: X/${cp.scoreRange.split('-')[1]} 
-- Confidence: X/5
-- Novelty: X/5
-- Technical Quality: X/5
-- Presentation: X/5
-
-**Recommendation**: [Strong Accept / Weak Accept / Borderline / Weak Reject / Strong Reject]
-\`\`\`
-
----
-## Area Chair (AC) Meta-Review
-
-${count}명의 리뷰가 모두 완성된 후, AC로서 다음을 작성해 주세요:
-
-\`\`\`
-=== Area Chair Meta-Review ===
-
-**Reviewer Consensus Summary**
-[리뷰어들 사이의 공통점과 이견을 3-4문장으로 정리]
-
-**Critical Issues** (복수 리뷰어가 지적한 핵심 문제)
-- [이슈 1]
-- [이슈 2]
-(2-4개)
-
-**Agreed Strengths**
-- [공통적으로 인정된 강점]
-
-**AC Independent Assessment**
-[AC의 독립적 판단 — 리뷰어들이 놓친 것이 있는지 포함, 3-4문장]
-
-**Final Decision**: [Accept / Weak Accept / Borderline / Weak Reject / Reject]
-**AC Confidence**: X/5
-
-**Message to Authors**
-[합격 시: 카메라 레디에서 반드시 반영할 사항 / 거절 시: 재투고를 위한 핵심 개선 방향, 2-3문장]
-\`\`\``;
-
+  var prompt = lines.filter(function(l){return l!==null && l!==undefined;}).join('\n');
   showOut('rv-out','rv-txt',prompt);
-  // also register chip listener for r-personas if not done
 }
 
 /* ═══════════ TAB 4 · 연구 시작 ═══════════ */
