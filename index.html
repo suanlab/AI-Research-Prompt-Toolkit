@@ -338,20 +338,84 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
     <span class="lbl">논문 PDF 경로 또는 파일명</span>
     <input type="text" id="r-filepath" placeholder="예: /home/user/papers/my_paper.pdf  또는  draft.pdf" style="font-size:12px">
   </div>
-  <div class="fg mb"><span class="lbl">투고 대상 학술대회</span>
-    <div class="conf-grid" id="conf-selector">
-      <div class="conf-card on" data-conf="NeurIPS" onclick="selConf(this)"><div class="conf-name">NeurIPS</div><div class="conf-sub">ML/AI 전반, 이론~응용</div></div>
-      <div class="conf-card" data-conf="ICML" onclick="selConf(this)"><div class="conf-name">ICML</div><div class="conf-sub">ML 핵심 알고리즘·이론</div></div>
-      <div class="conf-card" data-conf="ICLR" onclick="selConf(this)"><div class="conf-name">ICLR</div><div class="conf-sub">딥러닝·표현학습 중심</div></div>
-      <div class="conf-card" data-conf="CVPR" onclick="selConf(this)"><div class="conf-name">CVPR</div><div class="conf-sub">컴퓨터비전 최대 학회</div></div>
-      <div class="conf-card" data-conf="ICCV" onclick="selConf(this)"><div class="conf-name">ICCV</div><div class="conf-sub">비전, 격년 최고 학회</div></div>
-      <div class="conf-card" data-conf="ECCV" onclick="selConf(this)"><div class="conf-name">ECCV</div><div class="conf-sub">유럽 비전, 격년</div></div>
-      <div class="conf-card" data-conf="ACL" onclick="selConf(this)"><div class="conf-name">ACL</div><div class="conf-sub">NLP/언어학 최고 학회</div></div>
-      <div class="conf-card" data-conf="EMNLP" onclick="selConf(this)"><div class="conf-name">EMNLP</div><div class="conf-sub">NLP 경험적·응용 연구</div></div>
-      <div class="conf-card" data-conf="AAAI" onclick="selConf(this)"><div class="conf-name">AAAI</div><div class="conf-sub">AI 전반, 넓은 범위</div></div>
-      <div class="conf-card" data-conf="KDD" onclick="selConf(this)"><div class="conf-name">KDD</div><div class="conf-sub">데이터마이닝·데이터과학</div></div>
-      <div class="conf-card" data-conf="ICRA" onclick="selConf(this)"><div class="conf-name">ICRA</div><div class="conf-sub">로봇공학, RL 응용</div></div>
-      <div class="conf-card" data-conf="UAI" onclick="selConf(this)"><div class="conf-name">UAI</div><div class="conf-sub">불확실성·베이지안 AI</div></div>
+  <div class="grid mb">
+    <div class="fg">
+      <span class="lbl">분야</span>
+      <select id="rv-domain-sel" onchange="rvDomainChange(this)">
+        <option value="ML" selected>ML — 머신러닝</option>
+        <option value="NLP">NLP — 자연어처리</option>
+        <option value="CV">CV — 컴퓨터비전</option>
+        <option value="DM">DM — 데이터마이닝</option>
+        <option value="DB">DB — 데이터베이스</option>
+        <option value="Robot">Robot — 로보틱스</option>
+      </select>
+    </div>
+    <div class="fg">
+      <span class="lbl">학술대회</span>
+        <select id="rv-conf-ML" data-domain="ML" class="rv-conf-sel">
+          <option value="AAAI">AAAI — AI 전반</option>
+          <option value="ICLR">ICLR — 딥러닝·표현학습</option>
+          <option value="ICML">ICML — ML 알고리즘·이론</option>
+          <option value="NeurIPS" selected>NeurIPS — ML/AI 전반</option>
+          <option value="AAMAS">AAMAS — 자율 에이전트</option>
+          <option value="AISTATS">AISTATS — AI·통계</option>
+          <option value="COLT">COLT — ML 이론</option>
+          <option value="IJCAI">IJCAI — AI 국제</option>
+          <option value="UAI">UAI — 불확실성 AI</option>
+        </select>
+        <select id="rv-conf-NLP" data-domain="NLP" class="rv-conf-sel" style="display:none">
+          <option value="ACL">ACL — NLP/언어학</option>
+          <option value="EMNLP">EMNLP — NLP 경험적 연구</option>
+          <option value="NAACL">NAACL — NLP 북미</option>
+          <option value="ACL Findings">ACL Findings — ACL 파인딩스</option>
+          <option value="COLING">COLING — 언어학·컴퓨팅</option>
+          <option value="CONLL">CONLL — 자연어학습</option>
+          <option value="EACL">EACL — NLP 유럽</option>
+          <option value="EMNLP Findings">EMNLP Findings — EMNLP 파인딩스</option>
+          <option value="ICASSP">ICASSP — 음성·신호처리</option>
+          <option value="IJCNLP">IJCNLP — NLP 아시아</option>
+          <option value="InterSpeech">InterSpeech — 음성언어처리</option>
+          <option value="NAACL Findings">NAACL Findings — NAACL 파인딩스</option>
+        </select>
+        <select id="rv-conf-CV" data-domain="CV" class="rv-conf-sel" style="display:none">
+          <option value="CVPR">CVPR — 컴퓨터비전</option>
+          <option value="ECCV">ECCV — 유럽 비전</option>
+          <option value="ICCV">ICCV — 비전, 격년</option>
+          <option value="ACCV">ACCV — 아시아 비전</option>
+          <option value="BMVC">BMVC — 영국 비전</option>
+          <option value="WACV">WACV — 응용 비전</option>
+        </select>
+        <select id="rv-conf-DM" data-domain="DM" class="rv-conf-sel" style="display:none">
+          <option value="CIKM">CIKM — 정보·지식관리</option>
+          <option value="ICDM">ICDM — 데이터마이닝</option>
+          <option value="KDD">KDD — 데이터마이닝</option>
+          <option value="SIGIR">SIGIR — 정보검색</option>
+          <option value="WSDM">WSDM — 웹 탐색·마이닝</option>
+          <option value="WWW">WWW — 웹·정보검색</option>
+          <option value="ASONAM">ASONAM — 소셜네트워크</option>
+          <option value="ICWSM">ICWSM — 소셜미디어</option>
+          <option value="ISWC">ISWC — 시맨틱 웹</option>
+          <option value="PAKDD">PAKDD — DM 아시아태평양</option>
+          <option value="PKDD">PKDD — DM 유럽</option>
+          <option value="RecSys">RecSys — 추천시스템</option>
+          <option value="SDM">SDM — 통계 데이터마이닝</option>
+        </select>
+        <select id="rv-conf-DB" data-domain="DB" class="rv-conf-sel" style="display:none">
+          <option value="ICDE">ICDE — 데이터 엔지니어링</option>
+          <option value="PODS">PODS — DB 이론</option>
+          <option value="SIGMOD">SIGMOD — DB 시스템</option>
+          <option value="VLDB">VLDB — DB 대용량</option>
+          <option value="BIGDATA">BIGDATA — 빅데이터</option>
+          <option value="CIDR">CIDR — DB 혁신</option>
+          <option value="DASFAA">DASFAA — DB 아시아</option>
+          <option value="EDBT">EDBT — DB 확장</option>
+        </select>
+        <select id="rv-conf-Robot" data-domain="Robot" class="rv-conf-sel" style="display:none">
+          <option value="CORL">CORL — 로봇학습</option>
+          <option value="ICRA">ICRA — 로보틱스</option>
+          <option value="IROS">IROS — 지능형 로봇</option>
+          <option value="RSS">RSS — 로봇 과학</option>
+        </select>
     </div>
   </div>
   <div class="grid3 mb">
@@ -514,27 +578,84 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
      TAB 6 · 논문 작성
 ══════════════════════════════════════════ -->
 <div class="panel" id="tab-writing">
-  <div class="fg mb">
-    <span class="lbl">투고 대상 학술대회 / 저널</span>
-    <div class="conf-grid" id="w-conf-selector">
-      <div class="conf-card on" data-conf="NeurIPS" data-style="neurips" onclick="selWConf(this)"><div class="conf-name">NeurIPS</div><div class="conf-sub">ML/AI 전반</div></div>
-      <div class="conf-card" data-conf="ICML" data-style="icml" onclick="selWConf(this)"><div class="conf-name">ICML</div><div class="conf-sub">ML 알고리즘·이론</div></div>
-      <div class="conf-card" data-conf="ICLR" data-style="iclr" onclick="selWConf(this)"><div class="conf-name">ICLR</div><div class="conf-sub">딥러닝·표현학습</div></div>
-      <div class="conf-card" data-conf="CVPR" data-style="cvpr" onclick="selWConf(this)"><div class="conf-name">CVPR</div><div class="conf-sub">컴퓨터비전</div></div>
-      <div class="conf-card" data-conf="ICCV" data-style="iccv" onclick="selWConf(this)"><div class="conf-name">ICCV</div><div class="conf-sub">비전, 격년</div></div>
-      <div class="conf-card" data-conf="ECCV" data-style="eccv" onclick="selWConf(this)"><div class="conf-name">ECCV</div><div class="conf-sub">유럽 비전</div></div>
-      <div class="conf-card" data-conf="ACL" data-style="acl" onclick="selWConf(this)"><div class="conf-name">ACL</div><div class="conf-sub">NLP/언어학</div></div>
-      <div class="conf-card" data-conf="EMNLP" data-style="emnlp" onclick="selWConf(this)"><div class="conf-name">EMNLP</div><div class="conf-sub">NLP 경험적 연구</div></div>
-      <div class="conf-card" data-conf="NAACL" data-style="naacl" onclick="selWConf(this)"><div class="conf-name">NAACL</div><div class="conf-sub">NLP 북미</div></div>
-      <div class="conf-card" data-conf="AAAI" data-style="aaai" onclick="selWConf(this)"><div class="conf-name">AAAI</div><div class="conf-sub">AI 전반</div></div>
-      <div class="conf-card" data-conf="IJCAI" data-style="ijcai" onclick="selWConf(this)"><div class="conf-name">IJCAI</div><div class="conf-sub">AI 국제 학회</div></div>
-      <div class="conf-card" data-conf="KDD" data-style="kdd" onclick="selWConf(this)"><div class="conf-name">KDD</div><div class="conf-sub">데이터마이닝</div></div>
-      <div class="conf-card" data-conf="WWW" data-style="www" onclick="selWConf(this)"><div class="conf-name">WWW</div><div class="conf-sub">웹·정보검색</div></div>
-      <div class="conf-card" data-conf="SIGIR" data-style="sigir" onclick="selWConf(this)"><div class="conf-name">SIGIR</div><div class="conf-sub">정보검색</div></div>
-      <div class="conf-card" data-conf="ICRA" data-style="icra" onclick="selWConf(this)"><div class="conf-name">ICRA</div><div class="conf-sub">로보틱스</div></div>
-      <div class="conf-card" data-conf="UAI" data-style="uai" onclick="selWConf(this)"><div class="conf-name">UAI</div><div class="conf-sub">불확실성 AI</div></div>
-      <div class="conf-card" data-conf="JMLR" data-style="jmlr" onclick="selWConf(this)"><div class="conf-name">JMLR</div><div class="conf-sub">저널 (ML)</div></div>
-      <div class="conf-card" data-conf="TPAMI" data-style="tpami" onclick="selWConf(this)"><div class="conf-name">TPAMI</div><div class="conf-sub">저널 (비전)</div></div>
+  <div class="grid mb">
+    <div class="fg">
+      <span class="lbl">분야</span>
+      <select id="wc-domain-sel" onchange="wcDomainChange(this)">
+        <option value="ML" selected>ML — 머신러닝</option>
+        <option value="NLP">NLP — 자연어처리</option>
+        <option value="CV">CV — 컴퓨터비전</option>
+        <option value="DM">DM — 데이터마이닝</option>
+        <option value="DB">DB — 데이터베이스</option>
+        <option value="Robot">Robot — 로보틱스</option>
+      </select>
+    </div>
+    <div class="fg">
+      <span class="lbl">학술대회</span>
+        <select id="wc-conf-ML" data-domain="ML" class="wc-conf-sel">
+          <option value="AAAI">AAAI — AI 전반</option>
+          <option value="ICLR">ICLR — 딥러닝·표현학습</option>
+          <option value="ICML">ICML — ML 알고리즘·이론</option>
+          <option value="NeurIPS" selected>NeurIPS — ML/AI 전반</option>
+          <option value="AAMAS">AAMAS — 자율 에이전트</option>
+          <option value="AISTATS">AISTATS — AI·통계</option>
+          <option value="COLT">COLT — ML 이론</option>
+          <option value="IJCAI">IJCAI — AI 국제</option>
+          <option value="UAI">UAI — 불확실성 AI</option>
+        </select>
+        <select id="wc-conf-NLP" data-domain="NLP" class="wc-conf-sel" style="display:none">
+          <option value="ACL">ACL — NLP/언어학</option>
+          <option value="EMNLP">EMNLP — NLP 경험적 연구</option>
+          <option value="NAACL">NAACL — NLP 북미</option>
+          <option value="ACL Findings">ACL Findings — ACL 파인딩스</option>
+          <option value="COLING">COLING — 언어학·컴퓨팅</option>
+          <option value="CONLL">CONLL — 자연어학습</option>
+          <option value="EACL">EACL — NLP 유럽</option>
+          <option value="EMNLP Findings">EMNLP Findings — EMNLP 파인딩스</option>
+          <option value="ICASSP">ICASSP — 음성·신호처리</option>
+          <option value="IJCNLP">IJCNLP — NLP 아시아</option>
+          <option value="InterSpeech">InterSpeech — 음성언어처리</option>
+          <option value="NAACL Findings">NAACL Findings — NAACL 파인딩스</option>
+        </select>
+        <select id="wc-conf-CV" data-domain="CV" class="wc-conf-sel" style="display:none">
+          <option value="CVPR">CVPR — 컴퓨터비전</option>
+          <option value="ECCV">ECCV — 유럽 비전</option>
+          <option value="ICCV">ICCV — 비전, 격년</option>
+          <option value="ACCV">ACCV — 아시아 비전</option>
+          <option value="BMVC">BMVC — 영국 비전</option>
+          <option value="WACV">WACV — 응용 비전</option>
+        </select>
+        <select id="wc-conf-DM" data-domain="DM" class="wc-conf-sel" style="display:none">
+          <option value="CIKM">CIKM — 정보·지식관리</option>
+          <option value="ICDM">ICDM — 데이터마이닝</option>
+          <option value="KDD">KDD — 데이터마이닝</option>
+          <option value="SIGIR">SIGIR — 정보검색</option>
+          <option value="WSDM">WSDM — 웹 탐색·마이닝</option>
+          <option value="WWW">WWW — 웹·정보검색</option>
+          <option value="ASONAM">ASONAM — 소셜네트워크</option>
+          <option value="ICWSM">ICWSM — 소셜미디어</option>
+          <option value="ISWC">ISWC — 시맨틱 웹</option>
+          <option value="PAKDD">PAKDD — DM 아시아태평양</option>
+          <option value="PKDD">PKDD — DM 유럽</option>
+          <option value="RecSys">RecSys — 추천시스템</option>
+          <option value="SDM">SDM — 통계 데이터마이닝</option>
+        </select>
+        <select id="wc-conf-DB" data-domain="DB" class="wc-conf-sel" style="display:none">
+          <option value="ICDE">ICDE — 데이터 엔지니어링</option>
+          <option value="PODS">PODS — DB 이론</option>
+          <option value="SIGMOD">SIGMOD — DB 시스템</option>
+          <option value="VLDB">VLDB — DB 대용량</option>
+          <option value="BIGDATA">BIGDATA — 빅데이터</option>
+          <option value="CIDR">CIDR — DB 혁신</option>
+          <option value="DASFAA">DASFAA — DB 아시아</option>
+          <option value="EDBT">EDBT — DB 확장</option>
+        </select>
+        <select id="wc-conf-Robot" data-domain="Robot" class="wc-conf-sel" style="display:none">
+          <option value="CORL">CORL — 로봇학습</option>
+          <option value="ICRA">ICRA — 로보틱스</option>
+          <option value="IROS">IROS — 지능형 로봇</option>
+          <option value="RSS">RSS — 로봇 과학</option>
+        </select>
     </div>
   </div>
 
@@ -741,6 +862,29 @@ function toggleCheck(el){el.classList.toggle('on')}
 function toggleSection(s,on){document.querySelectorAll(`[data-section="${s}"]`).forEach(e=>e.classList.toggle('on',on))}
 function selConf(el){document.querySelectorAll('.conf-card').forEach(c=>c.classList.remove('on'));el.classList.add('on')}
 function selWConf(el){document.querySelectorAll('#w-conf-selector .conf-card').forEach(function(c){c.classList.remove('on');});el.classList.add('on');}
+function rvDomainChange(sel){
+  var d=sel.value;
+  document.querySelectorAll('.rv-conf-sel').forEach(function(s){s.style.display='none';});
+  var t=document.getElementById('rv-conf-'+d);
+  if(t)t.style.display='';
+}
+function getRvConf(){
+  var d=document.getElementById('rv-domain-sel').value;
+  var s=document.getElementById('rv-conf-'+d);
+  return s ? s.value : '';
+}
+function wcDomainChange(sel){
+  var d=sel.value;
+  document.querySelectorAll('.wc-conf-sel').forEach(function(s){s.style.display='none';});
+  var t=document.getElementById('wc-conf-'+d);
+  if(t)t.style.display='';
+}
+function getWcConf(){
+  var d=document.getElementById('wc-domain-sel').value;
+  var s=document.getElementById('wc-conf-'+d);
+  return s ? s.value : '';
+}
+
 function cp(id,btn){
   const t=document.getElementById(id).textContent;if(!t)return;
   navigator.clipboard.writeText(t).then(()=>{btn.textContent='copied!';setTimeout(()=>btn.textContent='copy',1600)});
@@ -825,8 +969,8 @@ function genReview(){
   var fileRef = document.getElementById('r-filepath').value.trim();
   if(!fileRef){flashRequired('r-filepath');return;}
 
-  var conf    = document.querySelector('.conf-card.on').dataset.conf;
-  var cp2     = CONF_P[conf];
+  var conf    = getRvConf();
+  var cp2     = CONF_P[conf] || CONF_P['NeurIPS'];
   var count   = parseInt(document.getElementById('r-count').value);
   var lang    = document.getElementById('r-lang').value;
   var rigor   = document.getElementById('r-rigor').value;
@@ -956,11 +1100,78 @@ const TIER={top:'Top-tier (NeurIPS/ICML/ICLR/ACL/CVPR)',a:'A급 (AAAI/EMNLP/ICCV
 const DIRECTION={novel_method:'새로운 방법론 제안',analysis:'심층 분석 / 이해',application:'새로운 적용 영역',benchmark:'벤치마크 / 데이터셋 구축',survey:'Survey / 정리'};
 const DURATION={'3mo':'3개월 이내','6mo':'6개월','1yr':'1년 이상'};
 function genIdea(){
-  const kw=document.getElementById('i-keywords').value.trim();
-  if(!kw){flashRequired('i-keywords');return}
-  const res=chips('i-resources');
-  const avoid=document.getElementById('i-avoid').value.trim();
-  const p=`당신은 AI/ML 분야의 연구 방향을 제안하는 전문 어드바이저입니다.\n\n## 연구자 프로파일\n- 분야: ${DOMAIN_FULL[document.getElementById('i-domain').value]}\n- 목표 티어: ${TIER[document.getElementById('i-tier').value]}\n- 핵심 관심 키워드: ${kw}\n- 보유 자원: ${res.join(', ')}\n- 연구 기간: ${DURATION[document.getElementById('i-duration').value]}\n- 선호 방향: ${DIRECTION[document.getElementById('i-direction').value]}${avoid?'\n- 피하고 싶은 방향: '+avoid:''}\n\n## 요청\n다음 두 가지를 수행해 주세요.\n\n### 1. 연구 아이디어 생성\n위 프로파일에 맞는 참신한 연구 방향 5가지를 제안해 주세요.\n각 아이디어에 대해:\n- 아이디어 제목 (논문 제목 스타일)\n- 핵심 가설 한 문장\n- 왜 지금 이 아이디어가 타이밍이 좋은지 (트렌드 연결)\n- 예상 contribution (novelty 수준: High/Medium/Low)\n- 필요한 핵심 실험 2-3가지\n- 예상 난이도 및 기간\n\n### 2. 연구 갭 분석\n위 키워드 영역에서 아직 충분히 다루어지지 않은 공백(gap)을 3가지 찾아주세요.\n각 갭에 대해: 현재 상태 → 무엇이 빠져 있는가 → 이를 채우면 어떤 임팩트가 있는가를 설명해 주세요.\n\n마지막으로, 5가지 아이디어 중 현재 자원과 기간을 고려할 때 가장 현실적으로 실행 가능한 순위를 매겨 주세요.`;
+  var kw    = document.getElementById('i-keywords').value.trim();
+  if(!kw){flashRequired('i-keywords');return;}
+  var res   = chips('i-resources');
+  var avoid = document.getElementById('i-avoid').value.trim();
+  var domain= DOMAIN_FULL[document.getElementById('i-domain').value];
+  var tier  = TIER[document.getElementById('i-tier').value];
+  var dur   = DURATION[document.getElementById('i-duration').value];
+  var dir   = DIRECTION[document.getElementById('i-direction').value];
+
+  var lines = [
+    '당신은 AI/ML 분야의 연구 방향을 설계하고 문헌을 조사하는 전문 어드바이저입니다.',
+    '아래 연구자 프로파일을 바탕으로 다음 세 가지를 순서대로 수행해 주세요.',
+    '',
+    '## 연구자 프로파일',
+    '- 분야: ' + domain,
+    '- 목표 티어: ' + tier,
+    '- 핵심 관심 키워드: ' + kw,
+    '- 보유 자원: ' + (res.length ? res.join(', ') : '미입력'),
+    '- 연구 기간: ' + dur,
+    '- 선호 방향: ' + dir,
+    avoid ? '- 피하고 싶은 방향: ' + avoid : '',
+    '',
+    '---',
+    '## Task 1. 최신 관련 연구 및 SOTA 조사',
+    '',
+    '위 키워드와 분야를 기준으로 다음을 정리해 주세요.',
+    '',
+    '### 1-1. 핵심 논문 목록 (최근 3년, 2022~2025)',
+    '각 논문에 대해 아래 형식으로 정리해 주세요 (최소 10편):',
+    '- **제목** (저자, 학회/연도)',
+    '  - 핵심 아이디어: 한 문장',
+    '  - 주요 결과: 대표 수치 또는 기여',
+    '  - 한계점: 한 문장',
+    '',
+    '### 1-2. 현재 SOTA 모델/방법론 정리',
+    '각 태스크/벤치마크별로 현재 SOTA를 표 형태로 정리해 주세요:',
+    '| 벤치마크 | SOTA 모델 | 성능 수치 | 논문/연도 |',
+    '|----------|-----------|-----------|-----------|',
+    '(해당 분야의 주요 벤치마크 5개 이상)',
+    '',
+    '### 1-3. 연구 트렌드 흐름',
+    '2022 → 2023 → 2024 → 2025 방향으로 이 분야의 연구 흐름이 어떻게 변화해왔는지',
+    '주요 패러다임 전환과 함께 3~4문단으로 서술해 주세요.',
+    '',
+    '---',
+    '## Task 2. 연구 갭 분석',
+    '',
+    'Task 1의 조사 결과를 바탕으로, 위 키워드 영역에서 아직 충분히 다루어지지 않은 공백(gap)을 3가지 찾아주세요.',
+    '각 갭에 대해:',
+    '- 현재 상태: 기존 연구들이 어디까지 다루고 있는가',
+    '- 공백: 무엇이 빠져 있는가 (구체적으로)',
+    '- 임팩트: 이를 채우면 어떤 기여가 되는가',
+    '- 관련 SOTA와의 차별화 포인트',
+    '',
+    '---',
+    '## Task 3. 연구 아이디어 생성',
+    '',
+    'Task 1~2를 바탕으로, 위 프로파일에 맞는 참신한 연구 방향 5가지를 제안해 주세요.',
+    '각 아이디어에 대해:',
+    '- 제목: 논문 제목 스타일',
+    '- 핵심 가설: 한 문장',
+    '- 어떤 SOTA/연구 갭을 해결하는가: Task 1~2와 명시적으로 연결',
+    '- 타이밍 근거: 왜 지금 이 연구가 필요한가',
+    '- Novelty 수준: High / Medium / Low (판단 근거 포함)',
+    '- 필요한 핵심 실험 2~3가지',
+    '- 예상 난이도 및 기간',
+    '',
+    '마지막으로, 5가지 아이디어 중 현재 보유 자원(' + (res.length ? res.join(', ') : '미입력') + ')과',
+    '연구 기간(' + dur + ')을 고려할 때 가장 현실적으로 실행 가능한 순위를 매겨 주세요.'
+  ];
+
+  var p = lines.filter(function(l){return l!==null&&l!==undefined;}).join('\n');
   showOut('i-out','i-txt',p);
 }
 
@@ -983,9 +1194,8 @@ function genExperiment(){
 const W_HELP={structure:'Related Work 섹션의 그루핑 구조와 각 그룹에서 cite해야 할 논문 유형을 설계해 주세요.',abstract:'Abstract를 더 임팩트 있게 재작성하는 방법을 제안해 주세요. 1-sentence problem → 1-sentence gap → 1-sentence solution → key results 구조를 따라 주세요.',story:'논문의 전체 스토리라인을 강화해 주세요. Introduction의 hook, motivation, gap, contribution의 흐름과 Conclusion의 broader impact까지 논리적 서사를 설계해 주세요.',clarity:'글쓰기 명확성을 높이기 위한 구체적 제안을 해 주세요. 수동태 → 능동태 변환, 모호한 표현 제거, 핵심 문장 강화 방법을 포함해 주세요.',gap:'Research gap을 더 설득력 있게 제시하는 방법을 제안해 주세요. 기존 연구의 한계를 명확히 드러내고 우리 연구의 필요성을 자연스럽게 이어지도록 작성해 주세요.'};
 const W_VENUE_STYLE={NeurIPS:'NeurIPS는 이론적 엄밀함과 실증적 결과 모두를 중시합니다.',ICML:'ICML은 알고리즘의 수학적 기여와 깔끔한 논문 구조를 중시합니다.',ICLR:'ICLR은 재현성, ablation study, 명확한 writing을 중시합니다.',CVPR:'CVPR은 benchmark 결과, 시각적 설명, SOTA 비교를 중시합니다.',ACL:'ACL은 언어학적 엄밀함, 에러 분석, human evaluation을 중시합니다.',EMNLP:'EMNLP는 대규모 실험과 실용적 NLP 기여를 중시합니다.',AAAI:'AAAI는 접근성 있는 writing과 폭넓은 AI 기여를 중시합니다.',KDD:'KDD는 확장성, 실세계 데이터 실험, 런타임 분석을 중시합니다.',journal:'저널은 완성도, 완전한 실험, 상세한 분석을 중시합니다.'};
 function genWriting(){
-  var confEl  = document.querySelector('#w-conf-selector .conf-card.on');
-  var conf    = confEl ? confEl.dataset.conf : 'NeurIPS';
-  var style   = confEl ? confEl.dataset.style : 'neurips';
+  var conf    = getWcConf();
+  var style   = conf.toLowerCase().replace(/ /g,'_');
   var title   = document.getElementById('w-title').value.trim();
   var contrib = document.getElementById('w-contrib').value.trim();
   var domain  = document.getElementById('w-domain').value;
