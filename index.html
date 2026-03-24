@@ -334,11 +334,9 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
      TAB 7 · AI 리뷰
 ══════════════════════════════════════════ -->
 <div class="panel" id="tab-review">
-  <div class="fg mb"><span class="lbl">논문 제목</span>
-    <textarea id="r-title" placeholder="예: MoE-Diffusion: Mixture-of-Experts for Efficient Diffusion Model Sampling" style="min-height:42px;resize:none"></textarea>
-  </div>
-  <div class="fg mb"><span class="lbl">논문 초록 (Abstract)</span>
-    <textarea id="r-abstract" placeholder="논문 초록을 붙여넣으세요. 길이에 상관없이 전체 내용을 입력할수록 리뷰 품질이 높아집니다." style="min-height:130px"></textarea>
+  <div class="fg mb">
+    <span class="lbl">논문 PDF 경로 또는 파일명</span>
+    <input type="text" id="r-filepath" placeholder="예: /home/user/papers/my_paper.pdf  또는  draft.pdf" style="font-size:12px">
   </div>
   <div class="fg mb"><span class="lbl">투고 대상 학술대회</span>
     <div class="conf-grid" id="conf-selector">
@@ -392,7 +390,7 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
   </div>
   <button class="gen-btn" onclick="genReview()">▶  AI 리뷰 시뮬레이션 프롬프트 생성</button>
   <div class="output-box" id="rv-out">
-    <div class="out-head"><span class="out-tag">PROMPT</span><button class="copy-btn" onclick="cp('rv-txt',this)">copy</button></div>
+    <div class="out-head"><span class="out-tag">PROMPT — Claude CLI 복붙용</span><button class="copy-btn" onclick="cp('rv-txt',this)">copy</button></div>
     <div class="out-text" id="rv-txt"></div>
   </div>
 </div>
@@ -516,49 +514,100 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
      TAB 6 · 논문 작성
 ══════════════════════════════════════════ -->
 <div class="panel" id="tab-writing">
-  <div class="fg mb"><span class="lbl">논문 제목 (초안)</span>
-    <textarea id="w-title" placeholder="예: Efficient Long-Context Reasoning via Sparse Hierarchical Attention" style="min-height:42px;resize:none"></textarea>
+  <div class="fg mb">
+    <span class="lbl">투고 대상 학술대회 / 저널</span>
+    <div class="conf-grid" id="w-conf-selector">
+      <div class="conf-card on" data-conf="NeurIPS" data-style="neurips" onclick="selWConf(this)"><div class="conf-name">NeurIPS</div><div class="conf-sub">ML/AI 전반</div></div>
+      <div class="conf-card" data-conf="ICML" data-style="icml" onclick="selWConf(this)"><div class="conf-name">ICML</div><div class="conf-sub">ML 알고리즘·이론</div></div>
+      <div class="conf-card" data-conf="ICLR" data-style="iclr" onclick="selWConf(this)"><div class="conf-name">ICLR</div><div class="conf-sub">딥러닝·표현학습</div></div>
+      <div class="conf-card" data-conf="CVPR" data-style="cvpr" onclick="selWConf(this)"><div class="conf-name">CVPR</div><div class="conf-sub">컴퓨터비전</div></div>
+      <div class="conf-card" data-conf="ICCV" data-style="iccv" onclick="selWConf(this)"><div class="conf-name">ICCV</div><div class="conf-sub">비전, 격년</div></div>
+      <div class="conf-card" data-conf="ECCV" data-style="eccv" onclick="selWConf(this)"><div class="conf-name">ECCV</div><div class="conf-sub">유럽 비전</div></div>
+      <div class="conf-card" data-conf="ACL" data-style="acl" onclick="selWConf(this)"><div class="conf-name">ACL</div><div class="conf-sub">NLP/언어학</div></div>
+      <div class="conf-card" data-conf="EMNLP" data-style="emnlp" onclick="selWConf(this)"><div class="conf-name">EMNLP</div><div class="conf-sub">NLP 경험적 연구</div></div>
+      <div class="conf-card" data-conf="NAACL" data-style="naacl" onclick="selWConf(this)"><div class="conf-name">NAACL</div><div class="conf-sub">NLP 북미</div></div>
+      <div class="conf-card" data-conf="AAAI" data-style="aaai" onclick="selWConf(this)"><div class="conf-name">AAAI</div><div class="conf-sub">AI 전반</div></div>
+      <div class="conf-card" data-conf="IJCAI" data-style="ijcai" onclick="selWConf(this)"><div class="conf-name">IJCAI</div><div class="conf-sub">AI 국제 학회</div></div>
+      <div class="conf-card" data-conf="KDD" data-style="kdd" onclick="selWConf(this)"><div class="conf-name">KDD</div><div class="conf-sub">데이터마이닝</div></div>
+      <div class="conf-card" data-conf="WWW" data-style="www" onclick="selWConf(this)"><div class="conf-name">WWW</div><div class="conf-sub">웹·정보검색</div></div>
+      <div class="conf-card" data-conf="SIGIR" data-style="sigir" onclick="selWConf(this)"><div class="conf-name">SIGIR</div><div class="conf-sub">정보검색</div></div>
+      <div class="conf-card" data-conf="ICRA" data-style="icra" onclick="selWConf(this)"><div class="conf-name">ICRA</div><div class="conf-sub">로보틱스</div></div>
+      <div class="conf-card" data-conf="UAI" data-style="uai" onclick="selWConf(this)"><div class="conf-name">UAI</div><div class="conf-sub">불확실성 AI</div></div>
+      <div class="conf-card" data-conf="JMLR" data-style="jmlr" onclick="selWConf(this)"><div class="conf-name">JMLR</div><div class="conf-sub">저널 (ML)</div></div>
+      <div class="conf-card" data-conf="TPAMI" data-style="tpami" onclick="selWConf(this)"><div class="conf-name">TPAMI</div><div class="conf-sub">저널 (비전)</div></div>
+    </div>
   </div>
-  <div class="fg mb"><span class="lbl">핵심 Contribution (1~3가지)</span>
+
+  <div class="fg mb">
+    <span class="lbl">논문 제목 (초안)</span>
+    <input type="text" id="w-title" placeholder="예: Efficient Long-Context Reasoning via Sparse Hierarchical Attention" style="font-size:12px">
+  </div>
+
+  <div class="fg mb">
+    <span class="lbl">핵심 Contribution (1~3가지)</span>
     <textarea id="w-contrib" placeholder="예:&#10;1. 새로운 sparse attention 메커니즘 제안 (O(n log n) 복잡도)&#10;2. long-context에서 SOTA 달성&#10;3. 재현 가능한 코드 공개" style="min-height:80px"></textarea>
   </div>
-  <div class="fg mb"><span class="lbl">작성이 필요한 섹션 (복수 선택)</span>
+
+  <div class="grid mb">
+    <div class="fg">
+      <span class="lbl">연구 분야</span>
+      <select id="w-domain">
+        <option value="NLP">NLP / 언어모델</option>
+        <option value="CV">컴퓨터 비전</option>
+        <option value="RL">강화학습</option>
+        <option value="ML">머신러닝 일반</option>
+        <option value="GenAI">생성 AI</option>
+        <option value="GNN">그래프 신경망</option>
+        <option value="MultiModal">멀티모달</option>
+        <option value="Theory">이론 ML</option>
+        <option value="Robotics">로보틱스</option>
+      </select>
+    </div>
+    <div class="fg">
+      <span class="lbl">페이지 수 제한</span>
+      <select id="w-pages">
+        <option value="8">8페이지 (NeurIPS/ICML/ICLR 등)</option>
+        <option value="9">9페이지 (CVPR/ICCV/ECCV 등)</option>
+        <option value="10">10페이지 (AAAI 등)</option>
+        <option value="unlimited">제한 없음 (저널)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="fg mb">
+    <span class="lbl">실험 결과 요약</span>
+    <textarea id="w-results" placeholder="예: ImageNet Top-1 accuracy 84.2% (기존 SOTA 83.1% 대비 +1.1%), 추론 속도 2.3x 향상, 파라미터 수 30% 감소" style="min-height:64px"></textarea>
+  </div>
+
+  <div class="fg mb">
+    <span class="lbl">주요 베이스라인 / 비교 대상</span>
+    <textarea id="w-baselines" placeholder="예: ViT-B/16, DeiT-S, Swin-T, ConvNeXt-B" style="min-height:48px"></textarea>
+  </div>
+
+  <div class="fg mb">
+    <span class="lbl">포함할 섹션 (복수 선택)</span>
     <div class="chip-group" id="w-sections">
       <span class="chip on" data-v="abstract">Abstract</span>
       <span class="chip on" data-v="intro">Introduction</span>
       <span class="chip on" data-v="related">Related Work</span>
-      <span class="chip" data-v="method">Method</span>
-      <span class="chip" data-v="experiment">Experiments</span>
-      <span class="chip" data-v="conclusion">Conclusion</span>
+      <span class="chip on" data-v="method">Method</span>
+      <span class="chip on" data-v="experiments">Experiments</span>
+      <span class="chip on" data-v="conclusion">Conclusion</span>
       <span class="chip" data-v="limitation">Limitations</span>
       <span class="chip" data-v="appendix">Appendix</span>
     </div>
   </div>
-  <div class="grid mb">
-    <div class="fg"><span class="lbl">투고 대상</span>
-      <select id="w-venue">
-        <option value="NeurIPS">NeurIPS</option><option value="ICML">ICML</option>
-        <option value="ICLR">ICLR</option><option value="CVPR">CVPR</option>
-        <option value="ACL">ACL</option><option value="EMNLP">EMNLP</option>
-        <option value="AAAI">AAAI</option><option value="KDD">KDD</option>
-        <option value="journal">저널 (JMLR/TPAMI 등)</option>
-      </select>
-    </div>
-    <div class="fg"><span class="lbl">작성 도움 유형</span>
-      <select id="w-help">
-        <option value="structure">Related Work 구조 설계</option>
-        <option value="abstract">Abstract 개선</option>
-        <option value="story">논문 스토리라인 강화</option>
-        <option value="clarity">문장 명확성 향상</option>
-        <option value="gap">Research Gap 강조</option>
-      </select>
-    </div>
+
+  <div class="fg mbl">
+    <span class="lbl">추가 정보 / 특이사항 (선택)</span>
+    <textarea id="w-extra" placeholder="예: 코드 공개 예정, 데이터셋은 공개 데이터만 사용, 익명 제출 필요" style="min-height:48px"></textarea>
   </div>
-  <div class="fg mbl"><span class="lbl">현재 고민 / 막힌 부분 (선택)</span>
-    <textarea id="w-struggle" placeholder="예: Related Work에서 어떤 그루핑 방식이 좋을지 모르겠음. Intro에서 motivation이 약한 것 같음." style="min-height:56px"></textarea>
+
+  <button class="gen-btn" onclick="genWriting()">▶  LaTeX 논문 작성 프롬프트 생성</button>
+  <div class="output-box" id="w-out">
+    <div class="out-head"><span class="out-tag">PROMPT — Claude CLI 복붙용</span><button class="copy-btn" onclick="cp('w-txt',this)">copy</button></div>
+    <div class="out-text" id="w-txt"></div>
   </div>
-  <button class="gen-btn" onclick="genWriting()">▶  논문 작성 지원 프롬프트 생성</button>
-  <div class="output-box" id="w-out"><div class="out-head"><span class="out-tag">PROMPT</span><button class="copy-btn" onclick="cp('w-txt',this)">copy</button></div><div class="out-text" id="w-txt"></div></div>
 </div>
 
 
@@ -566,8 +615,9 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
      TAB 7 · 투고 전략
 ══════════════════════════════════════════ -->
 <div class="panel" id="tab-strategy">
-  <div class="fg mb"><span class="lbl">논문 초록 (Abstract)</span>
-    <textarea id="st-abstract" placeholder="논문 초록을 붙여넣으세요." style="min-height:110px"></textarea>
+  <div class="fg mb">
+    <span class="lbl">논문 PDF 경로 또는 파일명</span>
+    <input type="text" id="st-filepath" placeholder="예: /home/user/papers/my_paper.pdf  또는  draft.pdf" style="font-size:12px">
   </div>
   <div class="grid mb">
     <div class="fg"><span class="lbl">현재 결과 수준 (솔직하게)</span>
@@ -627,8 +677,9 @@ textarea{resize:vertical;min-height:70px;line-height:1.55}
      TAB 8 · Rebuttal 대응
 ══════════════════════════════════════════ -->
 <div class="panel" id="tab-rebuttal">
-  <div class="fg mb"><span class="lbl">논문 제목 / 한 줄 요약</span>
-    <textarea id="rb-paper" placeholder="예: MoE-Diffusion: 우리는 MoE를 diffusion 샘플링에 적용해 2x 속도 향상을 달성함" style="min-height:42px;resize:none"></textarea>
+  <div class="fg mb">
+    <span class="lbl">논문 PDF 경로 또는 파일명 (선택)</span>
+    <input type="text" id="rb-filepath" placeholder="예: /home/user/papers/my_paper.pdf  또는  draft.pdf" style="font-size:12px">
   </div>
   <div class="grid mb">
     <div class="fg"><span class="lbl">투고한 학회</span>
@@ -689,6 +740,7 @@ document.querySelectorAll('#b-strategies .chip,#i-resources .chip,#ex-concerns .
 function toggleCheck(el){el.classList.toggle('on')}
 function toggleSection(s,on){document.querySelectorAll(`[data-section="${s}"]`).forEach(e=>e.classList.toggle('on',on))}
 function selConf(el){document.querySelectorAll('.conf-card').forEach(c=>c.classList.remove('on'));el.classList.add('on')}
+function selWConf(el){document.querySelectorAll('#w-conf-selector .conf-card').forEach(function(c){c.classList.remove('on');});el.classList.add('on');}
 function cp(id,btn){
   const t=document.getElementById(id).textContent;if(!t)return;
   navigator.clipboard.writeText(t).then(()=>{btn.textContent='copied!';setTimeout(()=>btn.textContent='copy',1600)});
@@ -770,13 +822,11 @@ const RIGOR_NOTE={
 };
 
 function genReview(){
-  var title    = document.getElementById('r-title').value.trim();
-  var abstract = document.getElementById('r-abstract').value.trim();
-  if(!title)   {flashRequired('r-title');return;}
-  if(!abstract){flashRequired('r-abstract');return;}
+  var fileRef = document.getElementById('r-filepath').value.trim();
+  if(!fileRef){flashRequired('r-filepath');return;}
 
   var conf    = document.querySelector('.conf-card.on').dataset.conf;
-  var cp      = CONF_P[conf];
+  var cp2     = CONF_P[conf];
   var count   = parseInt(document.getElementById('r-count').value);
   var lang    = document.getElementById('r-lang').value;
   var rigor   = document.getElementById('r-rigor').value;
@@ -791,29 +841,28 @@ function genReview(){
 
   var langNote  = lang==='ko' ? '모든 리뷰는 한국어로 작성해 주세요.' : 'Write all reviews in English.';
   var rigorNote = RIGOR_NOTE[rigor];
+  var scoreMax  = cp2.scoreRange.split('-')[1];
 
-  var reviewerBlock = reviewers.map(function(pid,i){
+  var fileInstruction = '아래 논문 PDF를 읽어 주세요: ' + fileRef;
+
+  var reviewerBlock = reviewers.map(function(pid){
     var p = PERSONA_DESC[pid];
     return '### ' + p.name + ' \u2014 ' + p.role + '\n'
          + '- \uc8fc\uc694 \uad00\uc2ec\uc0ac: ' + p.focus + '\n'
          + '- \ub9ac\ubdf0 \uc2a4\ud0c0\uc77c: ' + p.tone;
   }).join('\n\n');
 
-  var scoreMax = cp.scoreRange.split('-')[1];
-
   var lines = [
-    '\ub2f9\uc2e0\uc740 ' + conf + ' \ud559\uc220\ub300\ud68c\uc758 \ub3d9\ub8cc \uc2ec\uc0ac(peer review) \uc2dc\ubbac\ub808\uc774\uc158\uc744 \uc218\ud589\ud558\ub294 \uc804\ubb38\uac00\uc785\ub2c8\ub2e4.',
-    '\uc544\ub798 \ub17c\ubb38\uc744 ' + count + '\uba85\uc758 \uc11c\ub85c \ub2e4\ub978 \ub9ac\ube70\uc5b4 \uad00\uc810\uc5d0\uc11c \ucca0\uc800\ud558\uac8c \uc2ec\uc0ac\ud574 \uc8fc\uc138\uc694.',
+    '## \ub17c\ubb38 \ud30c\uc77c',
+    fileInstruction,
+    '',
+    '\ub17c\ubb38\uc744 \uc77d\uc740 \ud6c4 \uc544\ub798 \uc2ec\uc0ac\ub97c \uc9c4\ud589\ud574 \uc8fc\uc138\uc694.',
     '',
     '---',
-    '## \ub17c\ubb38 \uc815\ubcf4',
-    '- **\uc81c\ubaa9**: ' + title,
-    '- **\ud22c\uace0 \ud559\ud68c**: ' + conf + ' (\ud569\uaca9\ub960 ' + cp.acceptance + ', \uc810\uc218 \ubc94\uc704 ' + cp.scoreRange + ')',
-    '- **\ud559\ud68c \uc2ec\uc0ac \ud2b9\uc131**: ' + cp.style,
+    '## \uc2ec\uc0ac \uc124\uc815',
+    '- **\ud22c\uace0 \ud559\ud68c**: ' + conf + ' (\ud569\uaca9\ub960 ' + cp2.acceptance + ', \uc810\uc218 \ubc94\uc704 ' + cp2.scoreRange + ')',
+    '- **\ud559\ud68c \uc2ec\uc0ac \ud2b9\uc131**: ' + cp2.style,
     ctx ? '- **\ucd94\uac00 \ucee8\ud14d\uc2a4\ud2b8**: ' + ctx : '',
-    '',
-    '**\ucd08\ub85d**:',
-    abstract,
     '',
     '---',
     '## \uc2ec\uc0ac \uc9c0\uce68',
@@ -823,10 +872,9 @@ function genReview(){
     langNote,
     '',
     '\uac01 \ub9ac\ubdf0\uc5b4\ub294 **\uc644\uc804\ud788 \ub3c5\ub9bd\uc801\uc73c\ub85c** \uc2ec\uc0ac\ud558\uba70, \uc11c\ub85c \ub2e4\ub978 \uc804\ubb38\uc131\uacfc \uad00\uc810\uc744 \uac00\uc9d1\ub2c8\ub2e4.',
-    '\ub9ac\ubdf0\uc5b4 \uac04 \uc758\ub3c4\uc801 \ub2e4\uc591\uc131\uc744 \uc720\uc9c0\ud558\uc138\uc694.',
     '',
     '---',
-    '## \ub9ac\ubdf0\uc5b4 \ud504\ub85c\ud30c\uc77c',
+    '## \ub9ac\ubdf0\uc5b4 \ud504\ub85c\ud30c\uc77c (' + count + '\uba85)',
     '',
     reviewerBlock,
     '',
@@ -835,14 +883,13 @@ function genReview(){
     '',
     '\uc544\ub798 \uad6c\uc870\ub97c ' + count + '\uba85 \uac01\uac01\uc5d0 \ub300\ud574 \uc644\uc804\ud558\uac8c \uc791\uc131\ud574 \uc8fc\uc138\uc694:',
     '',
-    '---',
     '=== [\ub9ac\ubdf0\uc5b4 \uc774\ub984 \ubc0f \uc5ed\ud560] ===',
     '',
     '**Summary**',
     '[\ub17c\ubb38\uc774 \ubb34\uc5c7\uc744 \uc8fc\uc7a5\ud558\uace0 \uae30\uc5ec\ud558\ub294\uc9c0 2-4\ubb38\uc7a5\uc73c\ub85c \uc694\uc57d]',
     '',
     '**Strengths**',
-    '- [\uad6c\uccb4\uc801\uc778 \uac15\uc810 1]',
+    '- [\uad6c\uccb4\uc801\uc778 \uac15\uc810 1 \u2014 \ub17c\ubb38 \ud2b9\uc815 \ub0b4\uc6a9 \uc778\uc6a9]',
     '- [\uad6c\uccb4\uc801\uc778 \uac15\uc810 2]',
     '- [\uad6c\uccb4\uc801\uc778 \uac15\uc810 3]',
     '',
@@ -861,7 +908,7 @@ function genReview(){
     '**Overall Assessment**',
     '[\uc885\ud569 \ud310\ub2e8 2-3\ubb38\uc7a5]',
     '',
-    '**Scores**',
+    '**Scores** (' + conf + ' \uc2a4\ucf00\uc77c: ' + cp2.scoreRange + ')',
     '- Overall: X/' + scoreMax,
     '- Confidence: X/5',
     '- Novelty: X/5',
@@ -869,18 +916,18 @@ function genReview(){
     '- Presentation: X/5',
     '',
     '**Recommendation**: [Strong Accept / Weak Accept / Borderline / Weak Reject / Strong Reject]',
-    '---',
+    '',
+    '(\ub9ac\ubdf0\uc5b4 ' + count + '\uba85 \ubaa8\ub450 \uc704 \ud615\uc2dd \ubc18\ubcf5)',
     '',
     '---',
     '## Area Chair (AC) Meta-Review',
     '',
     count + '\uba85\uc758 \ub9ac\ubdf0\uac00 \ubaa8\ub450 \uc644\uc131\ub41c \ud6c4, AC\ub85c\uc11c \ub2e4\uc74c\uc744 \uc791\uc131\ud574 \uc8fc\uc138\uc694:',
     '',
-    '---',
     '=== Area Chair Meta-Review ===',
     '',
     '**Reviewer Consensus Summary**',
-    '[\ub9ac\ubdf0\uc5b4\ub4e4 \uc0ac\uc774\uc758 \uacf5\ud1b5\uc810\uacfc \uc774\uaca0\uc744 3-4\ubb38\uc7a5\uc73c\ub85c \uc815\ub9ac]',
+    '[\ub9ac\ubdf0\uc5b4\ub4e4 \uc0ac\uc774\uc758 \uacf5\ud1b5\uc810\uacfc \uc774\uaca4\uc744 3-4\ubb38\uc7a5\uc73c\ub85c \uc815\ub9ac]',
     '',
     '**Critical Issues**',
     '- [\uc774\uc288 1]',
@@ -896,11 +943,10 @@ function genReview(){
     '**AC Confidence**: X/5',
     '',
     '**Message to Authors**',
-    '[\ud575\uc2ec \uac1c\uc120 \ubc29\ud5a5 2-3\ubb38\uc7a5]',
-    '---'
+    '[\ud575\uc2ec \uac1c\uc120 \ubc29\ud5a5 2-3\ubb38\uc7a5]'
   ];
 
-  var prompt = lines.filter(function(l){return l!==null && l!==undefined;}).join('\n');
+  var prompt = lines.filter(function(l){return l!==null&&l!==undefined;}).join('\n');
   showOut('rv-out','rv-txt',prompt);
 }
 
@@ -937,14 +983,128 @@ function genExperiment(){
 const W_HELP={structure:'Related Work 섹션의 그루핑 구조와 각 그룹에서 cite해야 할 논문 유형을 설계해 주세요.',abstract:'Abstract를 더 임팩트 있게 재작성하는 방법을 제안해 주세요. 1-sentence problem → 1-sentence gap → 1-sentence solution → key results 구조를 따라 주세요.',story:'논문의 전체 스토리라인을 강화해 주세요. Introduction의 hook, motivation, gap, contribution의 흐름과 Conclusion의 broader impact까지 논리적 서사를 설계해 주세요.',clarity:'글쓰기 명확성을 높이기 위한 구체적 제안을 해 주세요. 수동태 → 능동태 변환, 모호한 표현 제거, 핵심 문장 강화 방법을 포함해 주세요.',gap:'Research gap을 더 설득력 있게 제시하는 방법을 제안해 주세요. 기존 연구의 한계를 명확히 드러내고 우리 연구의 필요성을 자연스럽게 이어지도록 작성해 주세요.'};
 const W_VENUE_STYLE={NeurIPS:'NeurIPS는 이론적 엄밀함과 실증적 결과 모두를 중시합니다.',ICML:'ICML은 알고리즘의 수학적 기여와 깔끔한 논문 구조를 중시합니다.',ICLR:'ICLR은 재현성, ablation study, 명확한 writing을 중시합니다.',CVPR:'CVPR은 benchmark 결과, 시각적 설명, SOTA 비교를 중시합니다.',ACL:'ACL은 언어학적 엄밀함, 에러 분석, human evaluation을 중시합니다.',EMNLP:'EMNLP는 대규모 실험과 실용적 NLP 기여를 중시합니다.',AAAI:'AAAI는 접근성 있는 writing과 폭넓은 AI 기여를 중시합니다.',KDD:'KDD는 확장성, 실세계 데이터 실험, 런타임 분석을 중시합니다.',journal:'저널은 완성도, 완전한 실험, 상세한 분석을 중시합니다.'};
 function genWriting(){
-  const title=document.getElementById('w-title').value.trim();
-  const contrib=document.getElementById('w-contrib').value.trim();
-  if(!contrib){flashRequired('w-contrib');return}
-  const secs=chips('w-sections');
-  const venue=document.getElementById('w-venue').value;
-  const help=document.getElementById('w-help').value;
-  const struggle=document.getElementById('w-struggle').value.trim();
-  const p=`당신은 top-tier AI/ML 학회 논문 작성을 전문으로 하는 시니어 연구자입니다.\n\n## 논문 정보\n- 제목 (초안): ${title||'미정'}\n- 핵심 Contribution:\n${contrib}\n- 투고 대상: ${venue}\n- 학회 스타일: ${W_VENUE_STYLE[venue]}\n- 작성/개선이 필요한 섹션: ${secs.join(', ')||'전반'}\n${struggle?'- 현재 고민: '+struggle:''}\n\n## 주요 요청\n${W_HELP[help]}\n\n## 추가 요청\n1. 각 섹션별로 ${venue} 수준의 논문에서 기대되는 내용과 분량, 구조를 구체적으로 제시해 주세요.\n2. 이 논문의 contribution을 가장 효과적으로 포지셔닝하기 위한 framing 전략을 제안해 주세요.\n3. 리뷰어가 가장 먼저 공격할 가능성이 높은 약점 2-3가지와 그것을 논문 내에서 선제적으로 방어하는 방법을 알려 주세요.`;
+  var confEl  = document.querySelector('#w-conf-selector .conf-card.on');
+  var conf    = confEl ? confEl.dataset.conf : 'NeurIPS';
+  var style   = confEl ? confEl.dataset.style : 'neurips';
+  var title   = document.getElementById('w-title').value.trim();
+  var contrib = document.getElementById('w-contrib').value.trim();
+  var domain  = document.getElementById('w-domain').value;
+  var pages   = document.getElementById('w-pages').value;
+  var results = document.getElementById('w-results').value.trim();
+  var baselines=document.getElementById('w-baselines').value.trim();
+  var extra   = document.getElementById('w-extra').value.trim();
+  var secs    = chips('w-sections');
+  if(!contrib){flashRequired('w-contrib');return;}
+
+  var STYLE_PKG={
+    neurips:'\\usepackage{neurips_2024}',
+    icml:'\\usepackage{icml2024}',
+    iclr:'\\usepackage{iclr2024_conference}',
+    cvpr:'\\usepackage{cvpr}',
+    iccv:'\\usepackage{iccv}',
+    eccv:'\\usepackage{eccv}',
+    acl:'\\usepackage{acl}',
+    emnlp:'\\usepackage{acl}',
+    naacl:'\\usepackage{acl}',
+    aaai:'\\usepackage{aaai25}',
+    ijcai:'\\usepackage{ijcai24}',
+    kdd:'ACM \\documentclass{acmart}',
+    www:'ACM \\documentclass{acmart}',
+    sigir:'ACM \\documentclass{acmart}',
+    icra:'IEEE \\usepackage{ieeeconf}',
+    uai:'\\usepackage{uai2024}',
+    jmlr:'\\usepackage{jmlr2e}',
+    tpami:'IEEE \\usepackage{IEEEtran}'
+  };
+  var STYLE_URL={
+    neurips:'https://media.neurips.cc/Conferences/NeurIPS2024/Styles.zip',
+    icml:'https://icml.cc/Conferences/2024/StyleAuthorInstructions',
+    iclr:'https://github.com/ICLR/Master-Template',
+    cvpr:'https://github.com/cvpr-org/author-kit',
+    iccv:'https://iccv2023.thecvf.com/author.guidelines-361500-2-31-35.php',
+    eccv:'https://eccv.ecva.net/Conferences/2024/SubmissionPolicies',
+    acl:'https://github.com/acl-org/acl-style-files',
+    emnlp:'https://github.com/acl-org/acl-style-files',
+    naacl:'https://github.com/acl-org/acl-style-files',
+    aaai:'https://aaai.org/authorkit-25/',
+    ijcai:'https://www.ijcai.org/authors_kit',
+    kdd:'https://www.acm.org/publications/proceedings-template',
+    www:'https://www.acm.org/publications/proceedings-template',
+    sigir:'https://www.acm.org/publications/proceedings-template',
+    icra:'https://www.ieee.org/conferences/publishing/templates.html',
+    uai:'https://www.auai.org/uai2024/submission.php',
+    jmlr:'https://www.jmlr.org/format/format.html',
+    tpami:'https://www.computer.org/csdl/journal/tp'
+  };
+  var SECTIONS_MAP={
+    abstract:'Abstract',intro:'Introduction',related:'Related Work',
+    method:'Method (제안 방법)',experiments:'Experiments',
+    conclusion:'Conclusion',limitation:'Limitations',appendix:'Appendix'
+  };
+  var pageNote = pages==='unlimited' ? '페이지 제한 없음 (저널)' : '본문 ' + pages + '페이지 이내 (참고문헌 제외)';
+  var secList = secs.map(function(s){return '- ' + (SECTIONS_MAP[s]||s);}).join('\n');
+  var pkg  = STYLE_PKG[style]  || ('\\usepackage{' + style + '}');
+  var url  = STYLE_URL[style]  || '';
+
+  var lines = [
+    '당신은 top-tier AI/ML 논문 작성 전문가입니다.',
+    '아래 정보를 바탕으로 ' + conf + ' 제출 규격에 맞는 완전한 LaTeX 논문을 작성해 주세요.',
+    '',
+    '## LaTeX 스타일 요구사항',
+    '- 투고 학회: ' + conf,
+    '- 공식 스타일 패키지: ' + pkg,
+    url ? '- 공식 스타일 파일 출처: ' + url : '',
+    '- ' + pageNote,
+    '- 최신 ' + conf + ' 스타일 파일 규격을 정확히 따라 주세요.',
+    '  익명 제출(blind review) 여부, 줄 번호(line numbers), 컬럼 수 등 학회 규정을 반영해 주세요.',
+    '',
+    '## 논문 정보',
+    '- 제목: ' + (title || '(작성 중 — 적절한 제목을 제안해 주세요)'),
+    '- 연구 분야: ' + domain,
+    '',
+    '### 핵심 Contribution',
+    contrib,
+    results ? ('\n### 주요 실험 결과\n' + results) : '',
+    baselines ? ('\n### 베이스라인 / 비교 대상\n' + baselines) : '',
+    extra ? ('\n### 추가 사항\n' + extra) : '',
+    '',
+    '## 작성할 섹션',
+    secList,
+    '',
+    '## 작성 지시사항',
+    '',
+    '1. **완전한 .tex 파일**을 출력해 주세요.',
+    '   - \\documentclass 부터 \\end{document} 까지 전체 포함',
+    '   - pdflatex 또는 xelatex으로 바로 컴파일 가능한 수준',
+    '   - 필요한 모든 \\usepackage 선언 포함',
+    '',
+    '2. **섹션별 작성 기준**:',
+    '   - Abstract: 4~6문장, problem / gap / solution / key result 구조',
+    '   - Introduction: motivation → gap → contribution 흐름, \\itemize로 contribution 명시',
+    '   - Related Work: 3~4개 그룹으로 분류, 각 그룹 마지막에 우리 연구와의 차별점 1문장',
+    '   - Method: 핵심 아이디어를 수식(\\equation)과 함께 설명, \\algorithm 환경 포함 권장',
+    '   - Experiments: 메인 결과 table(\\booktabs 사용), ablation table 포함',
+    '   - Conclusion: 기여 요약 + limitation + future work',
+    '',
+    '3. **표와 수식**:',
+    '   - \\usepackage{booktabs} 사용, \\toprule / \\midrule / \\bottomrule 적용',
+    '   - 우리 방법 결과에 \\textbf{bold} 처리',
+    '   - 수식은 \\begin{equation} 환경 사용',
+    '',
+    '4. **Figure placeholder**:',
+    '   - 실제 이미지 파일 없이 \\includegraphics[width=\\linewidth]{figure_placeholder} 형태로 삽입',
+    '   - caption은 구체적으로 작성',
+    '',
+    '5. **참고문헌**:',
+    '   - \\bibliography{references} + \\bibliographystyle 사용',
+    '   - 실제 참고문헌은 representative한 논문 10~15편 예시로 포함 (bibtex 형식)',
+    '',
+    '6. **학회 특이사항** (' + conf + '):',
+    '   - ' + conf + ' 의 최신 제출 규정(anonymity, line numbers, acknowledgments 위치 등)을 정확히 반영해 주세요.',
+    '   - 스타일 파일에서 제공하는 매크로(예: \\icmltitle, \\iclrfinalcopy 등)를 올바르게 사용해 주세요.'
+  ];
+
+  var p = lines.filter(function(l){return l!==null&&l!==undefined;}).join('\n');
   showOut('w-out','w-txt',p);
 }
 
@@ -952,24 +1112,111 @@ function genWriting(){
 const ST_LEVEL={sota:'SOTA 달성 / 확실한 성능 개선',competitive:'경쟁력 있는 수준의 결과',modest:'소폭 개선 또는 아이디어·분석 중심',negative:'부정적 결과 또는 분석 논문',theoretical:'이론적 기여 중심 (실험 최소화)'};
 const ST_FACTORS={fit:'각 후보 학회에 대한 논문 적합도 분석 (토픽 매칭, 최근 accept 트렌드 고려)',timing:'다음 6개월 내 주요 학회 데드라인 기반 제출 타이밍 최적화',positioning:'이 논문의 핵심 contribution을 학회별로 어떻게 다르게 포지셔닝할지 전략',rejection:'각 학회별 리젝 확률 예측 및 주요 리젝 사유 예방 전략',cover:'커버레터 전략 및 에디터에게 어필할 포인트',concurrent:'병렬 투고 가능성 및 순서 전략 (workshop → main conf → 저널)',arxiv:'arXiv 공개 최적 타이밍 및 커뮤니티 파급 효과 극대화 방법'};
 function genStrategy(){
-  const ab=document.getElementById('st-abstract').value.trim();
-  if(!ab){flashRequired('st-abstract');return}
-  const factors=chips('st-factors');
-  const rejected=document.getElementById('st-rejected').value.trim();
-  const p=`당신은 top-tier AI/ML 학회 투고 전략을 전문으로 하는 어드바이저입니다.\n\n## 논문 현황\n- Abstract:\n${ab}\n- 결과 수준: ${ST_LEVEL[document.getElementById('st-level').value]}\n- 분야: ${document.getElementById('st-domain').value}\n- 제출 시기: ${document.getElementById('st-timing').value}\n- 저자 현황: ${document.getElementById('st-author').value}${rejected?'\n- 이전 리젝 히스토리:\n'+rejected:''}\n\n## 요청 사항\n${factors.map(f=>'- '+ST_FACTORS[f]).join('\n')}\n\n## 출력 형식\n\n### 추천 학회 순위 (Top 5)\n각 학회에 대해:\n- 추천 이유 (논문과의 시너지)\n- 예상 합격 가능성 (높음/중간/낮음)\n- 이 학회에 최적화하기 위해 강조해야 할 포인트\n- 데드라인 및 결과 발표 시기\n\n### 포지셔닝 전략\n이 논문의 핵심 메시지를 학회 성격에 맞게 어떻게 프레이밍할지 구체적으로 제시해 주세요.\n\n### 리스크 & 대비책\n가장 가능성 높은 리젝 시나리오 2가지와 각각에 대한 대비 전략을 제시해 주세요.`;
+  var fileRef = document.getElementById('st-filepath').value.trim();
+  if(!fileRef){flashRequired('st-filepath');return;}
+  var fileInstruction = '아래 논문 PDF를 읽어 주세요: ' + fileRef;
+  var factors=chips('st-factors');
+  var rejected=document.getElementById('st-rejected').value.trim();
+  var ST_LEVEL_MAP={
+    sota:'SOTA 달성 / 확실한 성능 개선',
+    competitive:'경쟁력 있는 수준의 결과',
+    modest:'소폭 개선 또는 아이디어·분석 중심',
+    negative:'부정적 결과 또는 분석 논문',
+    theoretical:'이론적 기여 중심 (실험 최소화)'
+  };
+  var ST_FACTORS_MAP={
+    fit:'각 후보 학회에 대한 논문 적합도 분석 (토픽 매칭, 최근 accept 트렌드 고려)',
+    timing:'다음 6개월 내 주요 학회 데드라인 기반 제출 타이밍 최적화',
+    positioning:'이 논문의 핵심 contribution을 학회별로 어떻게 다르게 포지셔닝할지 전략',
+    rejection:'각 학회별 리젝 확률 예측 및 주요 리젝 사유 예방 전략',
+    cover:'커버레터 전략 및 에디터에게 어필할 포인트',
+    concurrent:'병렬 투고 가능성 및 순서 전략 (workshop → main conf → 저널)',
+    arxiv:'arXiv 공개 최적 타이밍 및 커뮤니티 파급 효과 극대화 방법'
+  };
+  var level=document.getElementById('st-level').value;
+  var domain=document.getElementById('st-domain').value;
+  var timing=document.getElementById('st-timing').value;
+  var author=document.getElementById('st-author').value;
+  var lines = [
+    '당신은 top-tier AI/ML 학회 투고 전략을 전문으로 하는 어드바이저입니다.',
+    '',
+    '## 논문 파일',
+    fileInstruction,
+    '',
+    '논문을 읽은 후 아래 정보를 참고하여 투고 전략을 수립해 주세요.',
+    '',
+    '## 논문 현황',
+    '- 결과 수준: ' + (ST_LEVEL_MAP[level]||level),
+    '- 분야: ' + domain,
+    '- 제출 시기: ' + timing,
+    '- 저자 현황: ' + author,
+    rejected ? '- 이전 리젝 히스토리:\n' + rejected : '',
+    '',
+    '## 요청 사항',
+    factors.map(function(f){return '- ' + (ST_FACTORS_MAP[f]||f);}).join('\n'),
+    '',
+    '## 출력 형식',
+    '',
+    '### 추천 학회 순위 (Top 5)',
+    '각 학회에 대해: 추천 이유, 예상 합격 가능성(높음/중간/낮음), 강조해야 할 포인트, 데드라인',
+    '',
+    '### 포지셔닝 전략',
+    '이 논문의 핵심 메시지를 학회 성격에 맞게 어떻게 프레이밍할지 구체적으로 제시해 주세요.',
+    '',
+    '### 리스크 & 대비책',
+    '가장 가능성 높은 리젝 시나리오 2가지와 각각에 대한 대비 전략을 제시해 주세요.'
+  ];
+  var p=lines.filter(function(l){return l!==null&&l!==undefined;}).join('\n');
   showOut('st-out','st-txt',p);
 }
 
 /* ═══════════ TAB 8 · Rebuttal 대응 ═══════════ */
 const RB_STRATEGY={triage:'각 리뷰어 코멘트를 "반드시 반박해야 할 것 / 수용해야 할 것 / 추가 실험으로 답해야 할 것"으로 분류해 주세요.',draft:'리뷰어별로 각 약점에 대한 구체적인 반박 초안을 작성해 주세요.',experiment:'반박에 필요한 추가 실험 계획을 우선순위 순으로 제시해 주세요. 제약 시간 내에 실행 가능한 실험만 포함해 주세요.',tone:'리뷰어를 설득하는 톤과 어조 가이드를 제시해 주세요. 과도하게 방어적이거나 공격적이지 않으면서 자신감 있는 rebuttal 작성법을 알려 주세요.',common:'여러 리뷰어가 공통으로 제기한 문제를 묶어 한 번에 효율적으로 답변하는 방법을 제시해 주세요.',ac:'Area Chair를 설득하기 위한 전략을 제시해 주세요. 리뷰어 의견 중 AC가 중요하게 볼 포인트와 그에 대한 대응 방법을 포함해 주세요.'};
 function genRebuttal(){
-  const reviews=document.getElementById('rb-reviews').value.trim();
-  if(!reviews){flashRequired('rb-reviews');return}
-  const paper=document.getElementById('rb-paper').value.trim();
-  const strats=chips('rb-strategy');
-  const stance=document.getElementById('rb-stance').value.trim();
-  const limits=document.getElementById('rb-limits').value.trim();
-  const p=`당신은 top-tier AI/ML 학회 rebuttal 전략 전문가입니다.\n\n## 논문 정보\n${paper?'- 논문: '+paper+'\n':''}- 투고 학회: ${document.getElementById('rb-venue').value}\n- 현재 점수 분포: ${document.getElementById('rb-scores').value}${stance?'\n- 저자 사전 입장:\n'+stance:''}${limits?'\n- 제약 사항: '+limits:''}\n\n## 받은 리뷰\n${reviews}\n\n## 요청 사항\n${strats.map(s=>'### '+s.toUpperCase()+'\n'+RB_STRATEGY[s]).join('\n\n')}\n\n## 출력 가이드\n- 각 리뷰어 코멘트에 번호를 매겨 참조해 주세요 (예: R1-W1, R2-Q2)\n- 반박 초안은 실제 rebuttal에 그대로 쓸 수 있는 수준으로 작성해 주세요\n- 절대 양보해서는 안 되는 포인트와 전략적으로 양보해야 할 포인트를 명확히 구분해 주세요\n- 전체 rebuttal 전략의 우선순위 액션 리스트로 마무리해 주세요`;
+  var reviews=document.getElementById('rb-reviews').value.trim();
+  if(!reviews){flashRequired('rb-reviews');return;}
+  var fileRef = document.getElementById('rb-filepath').value.trim();
+  var fileInstruction = fileRef
+    ? '아래 논문 PDF를 읽어 주세요: ' + fileRef
+    : '(논문 파일 미입력 — 아래 리뷰 내용만으로 분석해 주세요)';
+  var strats=chips('rb-strategy');
+  var stance=document.getElementById('rb-stance').value.trim();
+  var limits=document.getElementById('rb-limits').value.trim();
+  var venue=document.getElementById('rb-venue').value;
+  var scores=document.getElementById('rb-scores').value;
+  var RB_STRATEGY_MAP={
+    triage:'각 리뷰어 코멘트를 "반드시 반박해야 할 것 / 수용해야 할 것 / 추가 실험으로 답해야 할 것"으로 분류해 주세요.',
+    draft:'리뷰어별로 각 약점에 대한 구체적인 반박 초안을 작성해 주세요.',
+    experiment:'반박에 필요한 추가 실험 계획을 우선순위 순으로 제시해 주세요.',
+    tone:'리뷰어를 설득하는 톤과 어조 가이드를 제시해 주세요.',
+    common:'여러 리뷰어가 공통으로 제기한 문제를 묶어 효율적으로 답변하는 방법을 제시해 주세요.',
+    ac:'Area Chair를 설득하기 위한 전략을 제시해 주세요.'
+  };
+  var lines = [
+    '당신은 top-tier AI/ML 학회 rebuttal 전략 전문가입니다.',
+    '',
+    '## 논문 파일',
+    fileInstruction,
+    '',
+    '## 투고 정보',
+    '- 투고 학회: ' + venue,
+    '- 현재 점수 분포: ' + scores,
+    stance ? '- 저자 사전 입장:\n' + stance : '',
+    limits ? '- 제약 사항: ' + limits : '',
+    '',
+    '## 받은 리뷰',
+    reviews,
+    '',
+    '## 요청 사항',
+    strats.map(function(s){return '### ' + s.toUpperCase() + '\n' + (RB_STRATEGY_MAP[s]||s);}).join('\n\n'),
+    '',
+    '## 출력 가이드',
+    '- 각 리뷰어 코멘트에 번호를 매겨 참조해 주세요 (예: R1-W1, R2-Q2)',
+    '- 반박 초안은 실제 rebuttal에 그대로 쓸 수 있는 수준으로 작성해 주세요',
+    '- 절대 양보해서는 안 되는 포인트와 전략적으로 양보해야 할 포인트를 명확히 구분해 주세요',
+    '- 전체 rebuttal 전략의 우선순위 액션 리스트로 마무리해 주세요'
+  ];
+  var p=lines.filter(function(l){return l!==null&&l!==undefined;}).join('\n');
   showOut('rb-out','rb-txt',p);
 }
 </script>
